@@ -37,14 +37,14 @@ class AuthControllerTest extends TestCase
   {
     //Sets
     $data = [
-        'username' => 'tteste@teste.com',
+        'username' => 'teste@teste.com',
         'password' => 'emtudo123'
     ];
 
     $user = [
       'username' => 'emtudo',
       'password' => bcrypt($data['password']),
-      'username' => 'teste@teste.com'
+      'email' => 'teste@teste.com'
     ];
 
     factory(User::class)->create($user);
@@ -56,6 +56,22 @@ class AuthControllerTest extends TestCase
     /**$response->assertJson([
       'username' => 'emtudo',
     ]);**/
+  }
+
+  public function testCantLogin()
+  {
+    //Sets
+    $data = [
+        'username' => uniqid(),
+        'password' => 'teste'
+    ];
+
+    $response = $this->post('auth/login', $data);
+
+    //Asserts
+    $response->assertStatus(401);
+
+
   }
 
 }
